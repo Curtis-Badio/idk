@@ -1,0 +1,365 @@
+<body style="overflow: hidden;" data-gr-c-s-loaded="true"><div role="dialog" aria-live="polite" aria-label="cookieconsent" aria-describedby="cookieconsent:desc" class="cc-window cc-floating cc-type-info cc-theme-classic cc-bottom cc-right cc-color-override--1935662339 cc-invisible" style="display: none;"><!--googleoff: all--><span id="cookieconsent:desc" class="cc-message">MovieStarPlanet uses cookies to ensure you get the best experience in their website <a aria-label="learn more about cookies" role="button" tabindex="0" class="cc-link" href="https://moviestarplanet.zendesk.com/hc/articles/213208965-Privacy-Policy" rel="noopener noreferrer nofollow" target="_blank">Learn more</a></span><div class="cc-compliance"><a aria-label="dismiss cookie message" role="button" tabindex="0" class="cc-btn cc-dismiss">Got it!</a></div><!--googleon: all--></div>	
+	<!-- Load the game into this element and don't change its name or position inside the document, needs to be in top layer (needed for payments, youtube-->
+	<object width="100%" height="100%" id="content" type="application/x-shockwave-flash" data="https://assets.mspcdns.com/msp/91.0.2/Main_20200728_110605.swf" style="visibility: visible; display: block;" tabindex="0"><param name="allowScriptAccess" value="always"><param name="allowFullScreen" value="true"><param name="wmode" value="opaque"><param name="flashvars" value="cdnLocalBasePath=https://assets.mspcdns.com/msp/&amp;cdnBasePath=https://content.mspcdns.com&amp;localeChain=en_US&amp;resourceModuleURLs=https://assets.mspcdns.com/msp/91.0.2/swf/locales/en_US_ResourceModule.swf&amp;newWsPath=https://ws-gb.mspapis.com/msp/91.0.4&amp;swfVer=Main_20200728_110605&amp;translationsVersion=20200728_1166&amp;baseHost=moviestarplanet.co.uk&amp;countryCode=GB&amp;environmentUrl=/htmlapi/api/v1/environments/?url=https%3A%2F%2Fwww.moviestarplanet.co.uk%2F&amp;fp=c6edea383bf72c2e6c6219c6787478d4"></object>
+
+	<div id="unblock_flash_help" class="text_font" style="display: none">
+		<p>To play Moviestarplanet in Chrome you need to unblock flash</p>
+		<div class="center_content">
+			<a id="enable_flash_btn" class="btn btn_yellow text_font" href="#" role="button" data-label="ENABLE_FLASH">
+				<span>Learn how to allow flash</span>
+			</a>
+		</div>
+	</div>
+	<div id="enable_flash_guide_container" class="guide_container" style="display: none">
+		<div id="enable_flash_guide_content" class="guide_content">
+				<h1 id="enable_flash_guide_title" class="big_font center_content"></h1>
+				<ol>
+					<li id="enable_flash_step1">
+						<img id="" alt="Click the small puzzle-piece button. Click 'Manage' in the popup" style="display: inline-block">
+						<div class="enable_flash_description">
+							<p>Click the small puzzle-piece button.</p> 
+							<p>Click 'Manage' in the popup</p>
+						</div>
+					</li>
+					<li id="enable_flash_step2">
+						<img alt="In the new page that opens click the slider">
+						<div class="enable_flash_description">
+							<p>In the new page that opens click the slider</p> 
+						</div>
+					</li>
+					<li id="enable_flash_step3">
+						<img alt="Go back to Moviestarplanet and click 'Play in Chrome' again">
+						<div class="enable_flash_description">
+							<p></p> 
+						</div>
+					</li>
+				</ol>
+				<div class="center_content">
+					<a id="ok_button" class="btn btn_msp_medium btn_blue text-shadow big_font" href="#" role="button" data-label="OK">OK</a>
+				</div>
+				
+				<a id="enable_flash_guide_close" class="btn btn_msp_close scaling_font" href="#" role="button">
+					<img id="enable_flash_guide_close_icon" class="shadowed guide_close_icon" src="img/close_icon.svg">
+				</a>
+		</div>
+	</div>
+
+	<div id="installation_guide_container" class="guide_container" style="display:none;">
+		<div id="installation_guide_content" class="guide_content">
+			<video id="installation_guide_video_content" style="width:100%; height:100%;filter:saturate(50%)"></video>
+			<a id="installation_guide_close" class="btn btn_msp_close scaling_font" href="#" role="button">
+				<img id="installation_guide_close_icon" class="shadowed guide_close_icon" src="img/close_icon.svg">
+			</a>
+		</div>
+	</div>
+
+	<!-- Start effect -->
+    <div id="starshine" style="z-index: 2; display: none;"></div>
+
+    <!-- content -->
+    <div id="mainContent" class="" style="">
+
+
+
+	<meta charset="utf-8">
+	<title>Moviestarplanet</title>
+
+
+
+
+	
+	<div id="gameContainer">
+		
+		<video id="simple_video_content" style="display:none; position:absolute"></video>
+		<div id="mainContainer">
+			<div id="video-content" style="display:none">
+				<video id="video_ad_content_element">
+				</video>
+			</div>
+			<div id="video_ad_container" style="display:none"></div>
+		</div>
+
+		<div id="black_blocker" style="display: none;"></div>
+	</div>
+
+	<script>
+		var needToActivateFlashPlugin = universe.cookies.getCookie('play_in_browser_requested');
+		if (needToActivateFlashPlugin == 1) {
+			universe.cookies.setCookie('play_in_browser_requested', 0, 30);
+			trackTagEvent('flash_plugin_activated');
+		}
+
+		loadGameSwf();
+		fadeOutStars();
+		
+		function fadeOutStars(){
+			$("#starshine").delay(4000).fadeOut(1500, function(){
+				$("#starshine").html("");
+			});
+		}
+		
+		function getFingerprint() {
+			return universe.User.getFingerprint();
+		}
+
+		function getBrowser() {
+			return universe.browser.specs.name + " - " + universe.browser.specs.version;
+		}
+
+		//Embed the SWF
+		function loadGameSwf() {
+			if (fpval == 0) {
+				setTimeout(loadGameSwf, 100);
+				return;
+			}
+			var environment = universe.environment;
+
+			//Create game flash vars with all the data we got
+			var flashVars = {
+				"cdnLocalBasePath": environment.assetsBaseEndPoint + "/",
+				"cdnBasePath": environment.contentEndPoint,
+				"localeChain": environment.flashLocale,
+				"resourceModuleURLs": environment.assetsBaseEndPoint + "/" + environment.assetsVersion + "/swf/locales/" + environment.flashLocale + "_ResourceModule.swf",
+				"newWsPath": environment.mspwsEndPoint + environment.environmentFlashVars,
+				"swfVer": universe.game.fileVersion,
+				"translationsVersion": universe.i18n.translationVersion,
+				"baseHost": environment.baseHost,
+				"countryCode": environment.countryCode,
+				"environmentUrl": environment.environmentUrl,
+				"fp": fpval
+			};
+			var params = { allowScriptAccess: 'always', allowFullScreen: 'true', wmode: 'opaque' };
+			var swfPath = environment.assetsBaseEndPoint + "/" + environment.assetsVersion + "/" + universe.game.fileVersion + ".swf";
+
+			universe.game.onEmbedSuccess = function () {
+				//A bug in swfObject doesn't call this.
+				$('#content').css("display", "block");
+				$('#black_blocker').delay(1000).fadeOut(2000);
+			}
+
+			var attributes = 
+            {
+				id:"BuilderGame"
+			}
+
+			universe.game.embedGame(
+                    swfPath,
+                    "content",
+                    flashVars,
+                    params,
+                    null,
+                    '100%', 
+                    '100%',
+					"swf/expressInstall.swf");  
+					
+			trackTagEvent('play_in_browser');      
+					
+		}
+	</script>
+
+
+</div>
+
+	<!-- Needed for the Boku buying interface -->
+	<div id="overlayFrame1" class="hiddenDivs"></div>
+	<div id="overlayFrame2" class="hiddenDivs"></div>
+	<div id="overlayFrame3" class="hiddenDivs"></div>
+	<div id="overlayFrame4" class="hiddenDivs"></div>
+	<div id="overlayFrame5" class="hiddenDivs"></div>
+	<!-- Needed for the Boku buying interface -->
+	
+	<!-- Needed for arcade (also make sure to import flashminigames.js, and copy gameContainer.html and minigames.html-->
+	<div id="gameFrame" class="hiddenDivs" style="left:0px;top:0px;"></div>
+	<div id="empty"></div>
+	<!-- Needed for arcade -->
+
+    <!-- Footer -->
+	
+    <nav id="bottom_bar_container" class="navbar fixed-bottom navbar-expand navbar-msp" style="bottom: 0px;">
+		<a id="kids_safe_badge" style="display:none" href="https://www.kidsafeseal.com/certifiedproducts/moviestarplanet.html" target="_blank">
+			<img border="0" alt="MovieStarPlanet.com is certified by the kidSAFE Seal Program." src="https://www.kidsafeseal.com/sealimage/15216742731989906964/moviestarplanet_small_darktm.png">
+		</a>
+        <a class="navbar-brand" href="#" style="pointer-events:none;">© MovieStarPlanet <script>document.write(new Date().getFullYear())</script>2020</a>
+        <div id="store_links_bottom_bar_container" class="navbar-collapse">
+            <ul class="navbar-nav mr-auto d-flex flex-wrap" id="footerMenu">
+            <li class="nav-item"><a class="nav-link" id="separator" "="">|</a></li><li class="nav-item"><a class="nav-link" id="help" href="https://moviestarplanet.zendesk.com/hc/en-gb/articles/360008432360">Help</a></li><li class="nav-item"><a class="nav-link" id="corporate" href="https://corporate.moviestarplanet.com">Corporate</a></li><li class="nav-item"><a class="nav-link" id="contact" href="https://moviestarplanet.zendesk.com/hc/en-gb/">Contact</a></li><li class="nav-item"><a class="nav-link" id="safety" href="https://moviestarplanet.zendesk.com/hc/en-gb/articles/115000385689">Safety</a></li><li class="nav-item"><a class="nav-link" id="terms" href="https://moviestarplanet.zendesk.com/hc/en-gb/articles/213892145">Terms &amp; Conditions</a></li><li class="nav-item"><a class="nav-link" id="parents" href="https://moviestarplanet.zendesk.com/hc/en-gb/articles/214480005">Parents</a></li><li class="nav-item"><a class="nav-link" id="separator" "="">|</a></li><li class="nav-item"><a class="nav-link" id="privacy" href="https://moviestarplanet.zendesk.com/hc/en-gb/articles/213208965" style="font-weight: bold;">Privacy Policy</a></li></ul>
+			<ul id="store_links_bottom_bar" class="navbar-nav">
+				<li class="nav-item">
+					<a id="get_windows_store" style="text-decoration:none;" href="#" title="Download MovieStarPlanet for Windows!">
+						<img src="img/windows_store_small.png" alt="">
+					</a>
+				</li>
+				<li class="nav-item">
+					<a id="get_app_store" style="text-decoration:none;" title="Download MovieStarPlanet on Apple Store!" href="https://itunes.apple.com/app/moviestarplanet/id520097315">
+						<img src="img/apple_store_small.png" alt="">
+					</a>
+				</li>
+				<li class="nav-item">
+					<a id="get_google_play_store" style="text-decoration:none;" title="Download MovieStarPlanet on Google Play!" href="https://play.google.com/store/apps/details?id=air.MSPMobile">
+						<img src="img/google_store_small.png" alt="">
+					</a>
+				</li>
+			</ul>
+        </div>
+    </nav>
+	<object allowscriptaccess="always" allowfullscreen="true" wmode="opaque" width="100%" height="100%" id="flashTester" type="application/x-shockwave-flash" data="swf/sampleswf.swf" style="visibility: visible;"><param name="allowScriptAccess" value="always"><param name="allowFullScreen" value="true"><param name="wmode" value="opaque"></object>
+	
+	<a href="https://msp-dlshell.mspcdns.com/MovieStarPlanetSetup1.0.8.exe" download="" id="download_game" hidden="" target="_blank"></a>
+	<a target="_blank" href="https://get.adobe.com/flashplayer/" download="" id="get_flash_player_link" hidden=""></a>
+
+    <!-- Google Tag Manager -->
+    <script>		
+		var gtagmanagerId = "GTM-NFWTSRL";
+		var gaId = "UA-7340766-1";
+		
+		
+		function trackTagEvent(event) 
+		{
+			window.dataLayer = window.dataLayer || [];
+			window.dataLayer.push({
+				'event': event,
+			});
+		}
+	
+		(function (w, d, s, l, i)
+        {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', gtagmanagerId);</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="'https://www.googletagmanager.com/ns.html?id=' + gtagmanagerId + '" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script><script src="https://ssl.google-analytics.com/ga.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        try 
+        {
+            var pageTracker = _gat._getTracker(gaId);
+            _gat._anonymizeIp();
+
+            pageTracker._trackPageview();
+        }
+        catch (err) {}
+
+    </script>
+	
+	<script>
+		if ( window.self !== window.top ) 
+		{
+			$.getJSON("https://iframe.mspcdns.com/whitelist.json", {version: new Date().getTime()}, function(json)
+			{
+				var valid = false;
+				
+				if(json != null)
+				{
+					var url = extractHostname();
+					
+					if(url != null)
+					{
+						var sites;
+						var len;
+						var site;
+						
+						for(var key in json)
+						{
+							sites = json[key];
+							
+							if(sites && sites.length > 0)
+							{
+								len = sites.length;
+								
+								for(var i = 0;i<len;i++)
+								{
+									site = sites[i].toLowerCase();
+									
+									if(url == site)
+									{
+										valid = true;
+										break;
+									}
+								}
+							}
+							
+							if(valid)
+							{
+								break;
+							}
+						}
+					}
+				}
+				
+				if(!valid)
+				{
+					window.top.location.href=window.location.href;
+				}
+			});
+		}		
+		
+		function extractHostname()
+		{
+			var url = document.referrer.toLowerCase();
+			var hostname;
+			
+			if(url != null && url.length > 0)
+			{
+				if (url.indexOf("://") > -1)
+				{
+					hostname = url.split('/')[2];
+				}
+				else
+				{
+					hostname = url.split('/')[0];
+				}
+				
+				hostname = hostname.split(':')[0];
+				hostname = hostname.split('?')[0];
+				
+				if ((hostname.indexOf("www.") == 0))
+				{
+					hostname = hostname.substring(4, hostname.length);
+				}
+			}
+
+			return hostname;
+		}
+	</script>
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js?v=1"></script>
+	 <script src="https://code.jquery.com/jquery-3.3.1.min.js?v=1" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	 <script type="text/javascript" src="js/mspuniverse.min.js?v=2"></script>
+	 <script type="text/javascript" src="js/fp2.min.js?v=1"></script>
+	 <script type="text/javascript" src="js/star-effect.js?v=1"></script>
+	 <script type="text/javascript" src="js/pageFreezeFix.js"></script>
+	 <script type="text/javascript" src="js/mobileRedirection.js?v=1"></script>
+	 <script type="text/javascript" src="js/libs/swfobject.js"></script>
+	 
+	 <script type="text/javascript" src="js/locales.js?v=8"></script>
+	 <script type="text/javascript" src="js/protocol-check.js?v=1"></script>
+		 
+	 <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+	 <script type="text/javascript" src="https://track.adform.net/serving/scripts/trackpoint/"></script>
+	 <script type="text/javascript" src="js/send_GA_events.js?v=1"></script>
+	 <script type="text/javascript" src="js/notifications.js?v=1"></script>
+	 <script type="text/javascript" src="js/whitelist.js?v=1"></script>
+   <script type="text/javascript" src="js/browser-specific/browser-configuration.js?v=1"></script>
+	 <script type="text/javascript" src="js/MSP.js?v=8"></script>
+	 <!--following scripts needed for archade games and ads-->
+	 <script type="text/javascript" src="js/tech.js?v=1"></script>
+	 <script type="text/javascript" src="js/flashminigames.js?v=1"></script>
+	 <script type="text/javascript" src="js/detect-zoom.js?v=1"></script>
+
+
+
+<script type="text/javascript" id="">!function(b,e,f,g,a,c,d){b.fbq||(a=b.fbq=function(){a.callMethod?a.callMethod.apply(a,arguments):a.queue.push(arguments)},b._fbq||(b._fbq=a),a.push=a,a.loaded=!0,a.version="2.0",a.queue=[],c=e.createElement(f),c.async=!0,c.src=g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d))}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init","2525227551039038");fbq("set","agent","tmgoogletagmanager","2525227551039038");fbq("track","PageView");</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2525227551039038&amp;ev=PageView&amp;noscript=1"></noscript>
+</body>
